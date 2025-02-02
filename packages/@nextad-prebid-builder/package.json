@@ -2,10 +2,18 @@
   "name": "@nextad/prebid-builder",
   "version": "0.0.0",
   "description": "",
-  "bin": {},
-  "scripts": {
-    "build-dev": "tsx src/index.ts build"
+  "bin": {
+    "prebid-build": "./dist/index.mjs"
   },
+  "scripts": {
+    "build": "tsup-node",
+    "build-dev": "tsx src/index.ts build",
+    "lint": "tsc --noEmit"
+  },
+  "files": [
+    "dist",
+    "package.json"
+  ],
   "author": "Kai Miyamoto",
   "keywords": [],
   "license": "MIT",
