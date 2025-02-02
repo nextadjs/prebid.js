@@ -56,9 +56,7 @@ async function buildPrebid(options: BuildOptions): Promise<void> {
   const prebidPath = resolvePrebidPath();
 
   logger.info("Installing Prebid.js dependencies...");
-
-  console.log(prebidPath);
-
+  
   await execPromise("npm install", { cwd: prebidPath });
 
   let modules: string[] = await resolveModules(options);
