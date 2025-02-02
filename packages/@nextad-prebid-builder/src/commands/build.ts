@@ -6,12 +6,22 @@ import { createRequire } from "module";
 import path from "path";
 import { fileURLToPath } from "url";
 import { promisify } from "util";
-import { webpack } from "webpack";
+
+const recommendedModules = [
+  "consentManagementGpp",
+  "consentManagementTcf",
+  "consentManagementUsp",
+  "gppControl_usnat",
+  "gppControl_usstates",
+  "gptPreAuction",
+  "tcfControl",
+];
 
 interface BuildOptions {
-  config: string;
+  config?: string;
   output: string;
   modules?: string;
+  recommended: "basic" | "none" | "all";
 }
 
 interface PrebidConfig {
@@ -40,10 +50,6 @@ export async function build(options: BuildOptions): Promise<void> {
 }
 
 function validateOptions(options: BuildOptions): boolean {
-  if (!isString(options?.config)) {
-    throw new Error("`options.config` is expected to be a string");
-  }
-
   if (!isString(options?.output)) {
     throw new Error("`options.config` is expected to be a string");
   }
@@ -58,10 +64,44 @@ async function buildPrebid(options: BuildOptions): Promise<void> {
 
   await execPromise("npm install", { cwd: prebidPath });
 
-  const moduleOption = options.modules ? `--modules=${options.modules}` : "";
+  let modules: string[] = await resolveModules(options);
+
+  logger.info(
+    `Including Modules: ${modules.length ? modules.join(", ") : "All"}`
+  );
+
+  const moduleOption = modules ? `--modules=${modules.join(",")}` : "";
 
   logger.info("Building Prebid.js...");
   await execPromise(`npx gulp build ${moduleOption}`, { cwd: prebidPath });
+}
+
+async function resolveModules(options: BuildOptions): Promise<string[]> {
+  const modulesSet = new Set<string>();
+
+  if (options.modules) {
+    options.modules.split(",").forEach((module) => modulesSet.add(module));
+  }
+
+  if (options.config) {
+    const configModules = await getModulesFromConfig(options.config);
+    configModules.forEach((module) => modulesSet.add(module));
+  }
+
+  if (options.recommended === "basic" || options.recommended === "all") {
+    recommendedModules.forEach((module) => modulesSet.add(module));
+  }
+
+  return Array.from(modulesSet);
+}
+
+async function getModulesFromConfig(configPath: string): Promise<string[]> {
+  const configContent = await fsPromises.readFile(
+    path.resolve(process.cwd(), configPath),
+    "utf-8"
+  );
+  const prebidConfig: PrebidConfig = JSON.parse(configContent);
+  return prebidConfig.modules;
 }
 
 async function copyPrebidOutput(output: string): Promise<void> {
@@ -71,10 +111,10 @@ async function copyPrebidOutput(output: string): Promise<void> {
   );
 
   const outputPath = path.resolve(process.cwd(), output);
-  const finalPath = outputPath.endsWith('.js') 
-    ? outputPath 
-    : path.join(outputPath, 'prebid.js');
-  
+  const finalPath = outputPath.endsWith(".js")
+    ? outputPath
+    : path.join(outputPath, "prebid.js");
+
   await fsPromises.mkdir(path.dirname(finalPath), { recursive: true });
 
   logger.info(`Copying Prebid.js build to ${finalPath}...`);
