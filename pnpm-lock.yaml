@@ -40,7 +40,7 @@ importers:
         version: 9.29.0
       webpack:
         specifier: ^5.97.1
-        version: 5.97.1(esbuild@0.24.2)
+        version: 5.97.1
     devDependencies:
       '@babel/core':
         specifier: ^7.26.7
@@ -56,16 +56,13 @@ importers:
         version: 7.26.0(@babel/core@7.26.7)
       babel-loader:
         specifier: ^9.2.1
-        version: 9.2.1(@babel/core@7.26.7)(webpack@5.97.1(esbuild@0.24.2))
+        version: 9.2.1(@babel/core@7.26.7)(webpack@5.97.1)
       terser-webpack-plugin:
         specifier: ^5.3.11
-        version: 5.3.11(esbuild@0.24.2)(webpack@5.97.1(esbuild@0.24.2))
+        version: 5.3.11(webpack@5.97.1)
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
-      vitest:
-        specifier: ^3.0.4
-        version: 3.0.4(@types/node@22.13.0)(terser@5.37.0)(tsx@4.19.2)
       vitest-mock-extended:
         specifier: ^2.0.2
         version: 2.0.2(typescript@5.7.3)(vitest@3.0.4(@types/node@22.13.0)(terser@5.37.0)(tsx@4.19.2))
@@ -3807,12 +3804,12 @@ snapshots:
 
   assign-symbols@1.0.0: {}
 
-  babel-loader@9.2.1(@babel/core@7.26.7)(webpack@5.97.1(esbuild@0.24.2)):
+  babel-loader@9.2.1(@babel/core@7.26.7)(webpack@5.97.1):
     dependencies:
       '@babel/core': 7.26.7
       find-cache-dir: 4.0.0
       schema-utils: 4.3.0
-      webpack: 5.97.1(esbuild@0.24.2)
+      webpack: 5.97.1
 
   babel-plugin-polyfill-corejs2@0.4.12(@babel/core@7.26.7):
     dependencies:
@@ -4968,16 +4965,14 @@ snapshots:
 
   tapable@2.2.1: {}
 
-  terser-webpack-plugin@5.3.11(esbuild@0.24.2)(webpack@5.97.1(esbuild@0.24.2)):
+  terser-webpack-plugin@5.3.11(webpack@5.97.1):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
       terser: 5.37.0
-      webpack: 5.97.1(esbuild@0.24.2)
-    optionalDependencies:
-      esbuild: 0.24.2
+      webpack: 5.97.1
 
   terser@5.37.0:
     dependencies:
@@ -5203,7 +5198,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.97.1(esbuild@0.24.2):
+  webpack@5.97.1:
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.6
@@ -5225,7 +5220,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.11(esbuild@0.24.2)(webpack@5.97.1(esbuild@0.24.2))
+      terser-webpack-plugin: 5.3.11(webpack@5.97.1)
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:

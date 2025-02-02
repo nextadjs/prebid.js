@@ -4,9 +4,7 @@
   "description": "",
   "bin": {},
   "scripts": {
-    "build-dev": "tsx src/index.ts build",
-    "test": "vitest",
-        "build-prebid": "cd node_modules/prebid.js && npm install && gulp build --modules=rubiconBidAdapter"
+    "build-dev": "tsx src/index.ts build"
   },
   "author": "Kai Miyamoto",
   "keywords": [],
@@ -32,7 +30,6 @@
     "babel-loader": "^9.2.1",
     "terser-webpack-plugin": "^5.3.11",
     "tsx": "^4.19.2",
-    "vitest": "^3.0.4",
     "vitest-mock-extended": "^2.0.2"
   }
 }
