@@ -6,11 +6,15 @@
   "keywords": [],
   "author": "Kai Miyamoto",
   "license": "MIT",
+  "scripts": {
+    
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nextadjs/prebid.js.git"
   },
   "devDependencies": {
+    "@types/node": "^22.13.0",
     "tsup": "^8.3.6",
     "typescript": "^5.7.3",
     "vitest": "^3.0.4"
