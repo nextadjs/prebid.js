@@ -1,10 +1,9 @@
 import { logger } from "@/utils/logger";
+import { resolveProjectPath } from "@/utils/resolver";
 import { isString } from "@/utils/validator";
 import { exec } from "child_process";
 import { promises as fsPromises } from "fs";
-import { createRequire } from "module";
 import path from "path";
-import { fileURLToPath } from "url";
 import { promisify } from "util";
 
 const recommendedModules = [
@@ -30,10 +29,6 @@ interface PrebidConfig {
 
 const execPromise = promisify(exec);
 
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export async function build(options: BuildOptions): Promise<void> {
   try {
     logger.info("Starting build process...");
@@ -58,9 +53,11 @@ function validateOptions(options: BuildOptions): boolean {
 }
 
 async function buildPrebid(options: BuildOptions): Promise<void> {
-  const prebidPath = path.resolve(__dirname, "../../node_modules/prebid.js");
+  const prebidPath = resolvePrebidPath();
 
   logger.info("Installing Prebid.js dependencies...");
+
+  console.log(prebidPath);
 
   await execPromise("npm install", { cwd: prebidPath });
 
@@ -74,6 +71,10 @@ async function buildPrebid(options: BuildOptions): Promise<void> {
 
   logger.info("Building Prebid.js...");
   await execPromise(`npx gulp build ${moduleOption}`, { cwd: prebidPath });
+}
+
+function resolvePrebidPath(): string {
+  return resolveProjectPath('node_modules/prebid.js');
 }
 
 async function resolveModules(options: BuildOptions): Promise<string[]> {
@@ -106,8 +107,8 @@ async function getModulesFromConfig(configPath: string): Promise<string[]> {
 
 async function copyPrebidOutput(output: string): Promise<void> {
   const sourcePath = path.resolve(
-    __dirname,
-    "../../node_modules/prebid.js/build/dist/prebid.js"
+    resolvePrebidPath(),
+    'build/dist/prebid.js'
   );
 
   const outputPath = path.resolve(process.cwd(), output);
